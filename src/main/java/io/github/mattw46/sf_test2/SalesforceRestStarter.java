@@ -56,8 +56,6 @@ public class SalesforceRestStarter {
         consumerKey = Creds.consumerKey;
         consumerSecret = Creds.consumerSecret;
         
-        System.out.println(username + " " + password + " " + consumerKey + " " + consumerSecret);
-        
         try {
             // login
             final CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -73,15 +71,12 @@ public class SalesforceRestStarter {
             post.setEntity(new UrlEncodedFormEntity(loginParams));
 
             final HttpResponse loginResponse = httpclient.execute(post);
-System.out.println(loginResponse.toString());
             // parse
             final ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
             final JsonNode loginResult = mapper.readValue(loginResponse.getEntity().getContent(), JsonNode.class);
             final String accessToken = loginResult.get("access_token").asText();
-            //final String accessToken = "00D2w00000DqOWC!AREAQGO_UVSXe7dCes.OoGiSMxDo9BvQsFJPQicpTUqA.GuS5NFnRIJXsMzGTllG9uzCKFU1H4inmX0aoBa87LunXCt_wb9k"; 
             final String instanceUrl = loginResult.get("instance_url").asText();
-            //final String instanceUrl = "https://resilient-shark-fnd6zw-dev-ed.my.salesforce.com";
 
             // query contacts
             final URIBuilder builder = new URIBuilder(instanceUrl);
